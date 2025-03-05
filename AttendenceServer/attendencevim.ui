@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AttendenceVim</class>
+ <widget class="QMainWindow" name="AttendenceVim">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>AttendenceVim</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>1000</width>
+      <height>900</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="showWidget">
+     <attribute name="title">
+      <string>考勤图像</string>
+     </attribute>
+     <widget class="QLabel" name="picLb">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>441</width>
+        <height>581</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(220, 138, 221);</string>
+      </property>
+      <property name="text">
+       <string>考勤图像</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="RegisterVim" name="registerWidget">
+     <attribute name="title">
+      <string>注册</string>
+     </attribute>
+    </widget>
+    <widget class="SelectVim" name="selectWidget">
+     <attribute name="title">
+      <string>查询</string>
+     </attribute>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>RegisterVim</class>
+   <extends>QWidget</extends>
+   <header location="global">registervim.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SelectVim</class>
+   <extends>QWidget</extends>
+   <header location="global">selectvim.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
