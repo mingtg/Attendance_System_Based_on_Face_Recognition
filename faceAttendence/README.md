@@ -1,8 +1,8 @@
 # FaceAttendence 人脸考勤系统分析
 
-## 概述整体功能
+## 概述
 
-FaceAttendence 是一个基于 Qt 图形界面开发的人脸考勤系统，集成了 OpenCV 进行图像处理。系统通过摄像头实时采集视频帧，使用级联分类器检测人脸；当检测到稳定人脸后，将当前帧编码为 JPEG 格式，并通过 TCP 网络发送到服务器。服务器返回包含员工编号、姓名、部门和时间等考勤信息的 JSON 数据，客户端解析后在界面上显示员工信息和头像。简而言之，该系统实现了“摄像头采集 → 人脸检测 → 发送给服务器 → 接收考勤结果 → 界面展示”的完整流程。
+FaceAttendence 为基于 Qt 图形界面开发的人脸考勤系统的客户端应用，集成了 OpenCV 进行图像处理。系统通过摄像头实时采集视频帧，使用级联分类器检测人脸；当检测到稳定人脸后，将当前帧编码为 JPEG 格式，并通过 TCP 网络发送到服务器。服务器返回包含员工编号、姓名、部门和时间等考勤信息的 JSON 数据，客户端解析后在界面上显示员工信息和头像。简而言之，系统实现了“摄像头采集 → 人脸检测 → 发送给服务器 → 接收考勤结果 → 界面展示”的完整流程。
 
 ## 类结构分析
 
@@ -60,7 +60,7 @@ FaceAttendence 是一个基于 Qt 图形界面开发的人脸考勤系统，集�
   - 如果连接成功，`connected` 信号触发，`stop_connect()` 停止 `mtimer` 定时器，输出“成功连接服务器”消息。
   - 如果连接断开，`disconnected` 信号触发，`start_connect()` 再次启动 `mtimer`，使得客户端每隔 5 秒重新尝试连接。
 - **数据发送**：当摄像头检测到人脸并准备好图像数据时，在 `timerEvent()` 中调用 `msocket.write(sendData)` 将封装好的图像和大小信息发送给服务器。发送使用 `QDataStream` 打包，其中先写入数据长度再写入图像字节，服务器在接收时可根据长度正确提取图像数据。注意设置版本号（`Qt_5_14`）以匹配双方 `QDataStream` 使用的协议。
-- **数据接收与解析**：`msocket.readyRead` 信号触发后调用 `recv_data()` 槽file-crejcngjkpukkryjjpflje。在该槽函数中，使用 `msocket.readAll()` 读取服务器发送过来的所有数据。接收到的数据格式为 JSON 文本（例如 `{"employeeID": "...", "name": "...", "department": "...", "time": "..."}`）。程序通过 `QJsonDocument::fromJson()` 解析字节流为 JSON 文档，并转换为 `QJsonObject`，从中提取 `"employeeID"`, `"name"`, `"department"`, `"time"` 四个字段的字符串值。最后将这些值分别显示到界面上的文本框 `numberEdit`, `nameEdit`, `departmentEdit`, `timeEdit`。
+- **数据接收与解析**：`msocket.readyRead` 信号触发后调用 `recv_data()` 槽。在该槽函数中，使用 `msocket.readAll()` 读取服务器发送过来的所有数据。接收到的数据格式为 JSON 文本（例如 `{"employeeID": "...", "name": "...", "department": "...", "time": "..."}`）。程序通过 `QJsonDocument::fromJson()` 解析字节流为 JSON 文档，并转换为 `QJsonObject`，从中提取 `"employeeID"`, `"name"`, `"department"`, `"time"` 四个字段的字符串值。最后将这些值分别显示到界面上的文本框 `numberEdit`, `nameEdit`, `departmentEdit`, `timeEdit`。
 
 ## 图像显示与用户界面联动
 
